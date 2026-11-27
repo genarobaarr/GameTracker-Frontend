@@ -3,6 +3,10 @@ import { session } from './src/domain/session.js';
 import { startRouter } from './src/navigation/router.js';
 import { action, el, panel, title } from './src/ui/components.js';
 
+import { initializeTheme } from './src/ui/theme.js';
+
+initializeTheme();
+
 const header = document.getElementById('header');
 const content = document.getElementById('content');
 

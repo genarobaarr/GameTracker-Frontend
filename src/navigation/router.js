@@ -3,6 +3,8 @@ import { session } from '../domain/session.js';
 import { action, el, link, muted, panel, title } from '../ui/components.js';
 import { forgot, login, register, reset, verify } from '../ui/views/auth.js';
 import { home } from '../ui/views/games.js';
+import { gameDetail } from '../ui/views/game-detail.js';
+import { themeToggle } from '../ui/theme.js';
 
 const routes = new Map([
   ['login', ['Iniciar sesión', login, false]],
@@ -10,7 +12,8 @@ const routes = new Map([
   ['forgot', ['Recuperar contraseña', forgot, false]],
   ['reset', ['Restablecer contraseña', reset, false]],
   ['verify', ['Verificar correo', verify, true]],
-  ['home', ['Inicio', home, true]]
+  ['home', ['Inicio', home, true]],
+  ['game', ['Detalle del juego', gameDetail, true]]
 ]);
 
 export function startRouter(header, content) {
@@ -32,9 +35,9 @@ export function startRouter(header, content) {
     el('button', { class: 'secondary', type: 'submit' }, 'Buscar'));
     header.replaceChildren(el('div', { class: 'topbar' },
       link([el('span', { class: 'brand-icon', 'aria-hidden': 'true' }, 'G'), 'GameTracker'], user ? 'home' : 'login', 'brand'),
-      search, user && el('div', { class: 'account-menu' },
-        el('span', { class: 'username' }, '@' + user.username),
-        action('Cerrar sesión', () => {
+      search, el('div', { class: 'account-menu' }, themeToggle(),
+        user && el('span', { class: 'username' }, '@' + user.username),
+        user && action('Cerrar sesión', () => {
           session.clear();
           go('login');
         }))));
@@ -52,7 +55,7 @@ export function startRouter(header, content) {
     if (route && !route[2] && session.user) return go('home');
     navigation(key, query);
     document.title = route ? route[0] + ' | GameTracker' : 'Página desconocida | GameTracker';
-    content.className = route && key !== 'home' ? 'auth-layout' : 'main-layout';
+    content.className = route && key !== 'home' && key !== 'game' ? 'auth-layout' : 'main-layout';
     if (!route) {
       content.replaceChildren(title('Página desconocida'), link('Volver', session.user ? 'home' : 'login'));
       return;
@@ -65,7 +68,7 @@ export function startRouter(header, content) {
     } catch (error) {
       if (signal.aborted) return;
       content.replaceChildren(panel(title(route[0]), muted(error.message),
-        action('Reintentar', render), query.has('q') && link('Volver al catálogo', 'home')));
+        action('Reintentar', render), (key === 'game' || query.has('q')) && link('Volver al catálogo', 'home')));
     }
     content.focus({ preventScroll: true });
   }
