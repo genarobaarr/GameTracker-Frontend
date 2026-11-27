@@ -6,8 +6,8 @@ Está hecha con HTML, CSS y módulos de JavaScript. Consume el API Gateway del b
 # Equipo Desarrollador
 
 [@genarobaarr](https://github.com/genarobaarr)  
-[@themrsomg](https://github.com/themrsomg)
-[@pablobitw](https://github.com/pablobitw)
+[@themrsomg](https://github.com/themrsomg)  
+[@pablobitw](https://github.com/pablobitw)  
 [@AlejandroMartinez5](https://github.com/AlejandroMartinez5)
 
 # Licencia
